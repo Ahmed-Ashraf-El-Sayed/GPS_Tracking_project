@@ -4,3 +4,10 @@ void UART_OutChar(unint8_t data){
 while((UART7_FR_R&0x00000020)!=0){}
 UART7_DR_R = data;
 }
+
+uint8_t UART_InChar(void){
+while((UART7_FR_R&0x0010) != 0);
+return((uint8_t)(UART7_DR_R&0xFF));
+}
+
+
