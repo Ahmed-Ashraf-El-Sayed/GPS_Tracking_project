@@ -1,0 +1,8 @@
+#include "stdint.h"
+#include "C:\Keil\ARM\ARMCC\include\tm4c123gh6pm.h"
+
+
+unint8_t UART_InChar(void){
+while((UART5_FR_R&0x0010) != 0);
+return((unint8_t)(UART5_DR_R&0xFF));
+}
