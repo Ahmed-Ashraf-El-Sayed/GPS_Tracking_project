@@ -1,8 +1,33 @@
 #include "stdint.h"
 #include "C:\Keil\ARM\ARMCC\include\tm4c123gh6pm.h"
+#include <string.h>
+void SystemInit(){};
+void UART5_INIT(){
+ SYSCTL_RCGCUART_R |=0x00000040;
+ SYSCTL_RCGCGPIO_R |= 0x00000010;
+ // enable UART5/GPIO port E clks
 
+UART5_CTL_R &= ~0x00000001;
+UART5_IBRD_R = 104;  
+UART5_FBRD_R = 11;
+// Insert BaudRate 
+UART5_LCRH_R = 0x00000070  ;
+UART5_CTL_R |= 0x00000001;
+// enable UART
+  
+GPIO_PORTE_AFSEL_R |= 0x30;
+GPIO_PORTE_PCTL_R = (GPIO_PORTE_PCTL_R &= ~0xFF00FFFF)+ 0x00110000;
+GPIO_PORTE_DEN_R |= 0x30;
+GPIO_PORTE_AMSEL_R &= ~0x30;  
+}
 
 unint8_t UART_InChar(void){
 while((UART5_FR_R&0x0010) != 0);
 return((unint8_t)(UART5_DR_R&0xFF));
+}
+nt main(){
+ while (1) {
+UART5_INIT();
+UART_InChar();	 	 
+}
 }
