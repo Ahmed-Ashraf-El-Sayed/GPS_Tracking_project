@@ -3,15 +3,15 @@
 #include "C:/Keil/EE319Kware/inc/tm4c123gh6pm.h"
 #define pi 3.14159265358979323846
 void SystemInit(){}
-double deg2rad(double deg) {
+float deg2rad(float deg) {
     return (deg * pi / 180);
 }
-double rad2deg(double rad) {
+float rad2deg(float rad) {
     return (rad * 180 / pi);
 }
 
-double distance(double lat1, double lon1, double lat2, double lon2, char unit) {
-    double theta, dist;
+float distance(float lat1, float lon1, float lat2, float lon2) {
+    float theta, dist;
     
     if ((lat1 == lat2) && (lon1 == lon2)) {
         return 0;
@@ -26,13 +26,21 @@ double distance(double lat1, double lon1, double lat2, double lon2, char unit) {
          }
 		return dist;
 	}
+float distance_total (float lat1, float lon1, float lat2, float lon2)
+{ // used to accumlate the distance to get the total
+	float Total=0;
+	if(lon1!=0 && lat1 !=0){ 
+		Total = distance(lat1,lon1,lat2,lon2);
+	}
+	return Total;
+}
    
     int main(){
-    double x1=40.76532;
-    double x2=20.867456;
-    double y1=20.89123;
-    double y2=20.980842;   
-    double c=distance(x1,x2,y1,y2,0);
+   float  x1=40.76532;
+  float  x2=20.867456;
+   float  y1=20.89123;
+   float  y2=20.980842;   
+   float  c=distance(x1,x2,y1,y2);
 		printf("%1f",c);		
 		}
 		
