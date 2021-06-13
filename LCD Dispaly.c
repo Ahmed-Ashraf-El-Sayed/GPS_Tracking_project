@@ -53,24 +53,49 @@ GPIO_PORTB_DEN_R |= 0xFF;
 GPIO_PORTB_PCTL_R &= ~0xFFFFFFFF;
 GPIO_PORTB_DIR_R |= 0XFF;
 }
-void LCD_init(){	
-int i;	
-char dist[14]={'T','o','t','a','l',' ','D','i','s','t','a','n','c','e'};		
+void LCD_init(int x){	
+int i,y,z;	
+char d1,d2,d3;
+char dist[16]={'T','o','t','a','l',' ','D','i','s','t','a','n','c','e',':',' '};
+y=x/100;
+d1=48+y;
+x=x-y*100;
+z=x/10;
+d2=48+z;
+x=x-z*10;
+d3=48+x;
 LCD_Command(0x30); //Wake up
 LCD_Command(0x38);	// select 8 bits mode	
 LCD_Command(0x01);   //clear display
 LCD_Command(0x0F); // display on , cursor blinking
 LCD_Command(0x80);  //FORCE CURSOR TO BEGIN AT FIRST LINE
 delay_ms(500);	
-for(i=0;i<14;i++){
+for(i=0;i<16;i++){
 LCD_Data(dist[i]);
 LCD_Command(0x06);
 delay_ms(500);	
 }
+LCD_Command(0xC0);
+LCD_Data(d1);
+LCD_Command(0x06);
+LCD_Data(d2);
+LCD_Command(0x06);
+LCD_Data(d3);
+LCD_Command(0x06);
+delay_ms(500);  
 }
 int main(){
 init();	
-while(1){
-LCD_init();	
+e=95;
+while(1){	
+LCD_init(e);
+if ( e >= 100){
+RED_LED_output(led_out);
+led_out|= 0x02;
+}
+else{ 
+led_out = 0x00;
+ 
+e++;
 }	
 }
