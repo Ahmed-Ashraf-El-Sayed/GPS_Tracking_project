@@ -6,14 +6,10 @@ void UART1_INIT(){
 SYSCTL_RCGCUART_R |= 0x00000002;	//Activate UART1	
  SYSCTL_RCGCGPIO_R |= 0x00000004; //Activate port c
 UART1_CTL_R &= ~0x00000001;
+// Insert BaudRate 
 UART1_IBRD_R = 104;  
 UART1_FBRD_R = 11;
-// Insert BaudRate 
-UART1_LCRH_R = 0x00000070  ;
-UART1_CTL_R |= 0x00000001;
 // enable UARTportc
-UART1_CTL_R &= ~ 0x00000001;
-
 UART1_LCRH_R &=  0x00000070;
 UART1_CTL_R |=  0x00000301;
 GPIO_PORTC_DEN_R |= 0x30;
@@ -21,12 +17,11 @@ GPIO_PORTC_AFSEL_R |= 0x30;
 GPIO_PORTC_PCTL_R = (GPIO_PORTC_PCTL_R&0xFF00FFFF)+0x00220000;
 GPIO_PORTC_AMSEL_R &= ~0x30;
 }
-
 char UART_InChar(void){
-while((UART5_FR_R&0x0010) != 0);
-return((char)(UART5_DR_R&0xFF));
+while((UART1_FR_R&0x0010) != 0);
+return((char)(UART1_DR_R&0xFF));
 }
-nt main(){
+int main(){
  while (1) {
 UART1_INIT();
 UART_InChar();	 	 
